@@ -13,9 +13,11 @@ class MainWindow : public QMainWindow {
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void buildComboBoxPaises();
 
 private slots:
     void showTime();
+    void on_cmbPaises_currentTextChanged(const QString &arg1);
 
 private:
     Ui::MainWindow *ui;
