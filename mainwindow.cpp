@@ -1,11 +1,19 @@
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include <ui_mainwindow.h>
 #include <QTimer>
 #include <QDateTime>
 #include <QStringList>
+#include <QStringList>
+#include <iostream>
+using namespace std;
+#include <QSqlQuery>
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent), ui(new Ui::MainWindow)
+    , mDbConnection("localhost", "SQL SERVER",
+                    "root", "", "paises", true){
     ui->setupUi(this);
+    mModel = nullptr;
     QTimer *timer = new QTimer(this);
     buildComboBoxPaises();
     connect(timer, SIGNAL(timeout()), this, SLOT(showTime()));
@@ -23,12 +31,27 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::buildComboBoxPaises() {
-    QStringList listPaises;
-    listPaises << "Argentina" << "Estados Unidos" << "España";
-    ui->cmbPaises->addItems(listPaises);
-    //foreach (const QString pais, listPaises) {
-     //
-    //}
+    QString error;
+    if (!mDbConnection.openDatabase(&error)) {
+        cout << "error de conexión a BDD: " << endl;
+    }
+    // if (mModel == nullptr) {
+     //    mModel = new QSqlQueryModel(this);
+     //    mModel->setQuery("SELECT * FROM paises");
+     //    mModel->query()
+    // }
+     QSqlQuery query;
+     query.exec("SELECT * FROM paises");
+     while(query.next()) {
+         ui->cmbPaises->addItem(query.value(2).toString());
+     }
+
+     //QStringList listPaises;
+     //listPaises << "Argentina" << "Estados Unidos" << "España";
+     //ui->cmbPaises->addItems(listPaises);
+     //foreach (const QString pais, listPaises) {
+      //
+     //}
 
 }
 
