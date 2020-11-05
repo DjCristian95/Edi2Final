@@ -1,37 +1,15 @@
 #include "databaseconnection.h"
 #include <QSqlQuery>
 #include <QSqlError>
+#include <QtSql/QSqlDatabase>
 
-DataBaseConnection::DataBaseConnection(const QString &server,
-                                       const QString &driver,
+DataBaseConnection::DataBaseConnection(const QString &databaseName,
+                                       const QString &port,
                                        const QString &user,
-                                       const QString &password,
-                                       const QString &databaseName,
-                                       bool trustedConnection) {
-    mDatabase = QSqlDatabase::addDatabase("QODBC");
+                                       const QString &password) {
+    mDatabase = QSqlDatabase::addDatabase("QSQLITE");
     mDatabaseName = databaseName;
-    mServer = server;
-    mDriver = driver;
+    mPort = port;
     mUser = user;
     mPassword = password;
-    mTrustedConnection = trustedConnection;
-}
-
-bool DataBaseConnection::openDatabase(QString *error) {
-    mDatabase.setDatabaseName(QString("DRIVER={%1};SERVER=%2;"
-                                      "DATABASE=%3;UID=%4;PWD=%5;"
-                                      "Trusted_Connection=%6;")
-                              .arg(mDriver)
-                              .arg(mServer)
-                              .arg(mDatabaseName)
-                              .arg(mUser)
-                              .arg(mPassword)
-                              .arg(mTrustedConnection ? "Yes" : "No"));
-    if(!mDatabase.open()) {
-        if(error != nullptr) {
-            *error = mDatabase.lastError().text();
-        }
-        return false;
-    }
-    return true;
 }

@@ -3,6 +3,9 @@
 
 #include <QMainWindow>
 #include "databaseconnection.h"
+#include <QtSql/QSqlDatabase>
+#include <QtSql/QSqlQuery>
+#include <QtSql/QSqlError>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -17,14 +20,19 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void buildComboBoxPaises();
+    QTime actualizaHora();
+    void crearTablaPaises();
+    void insertarPaises();
+    void borrarPaises();
 
 private slots:
     void showTime();
-    void on_cmbPaises_currentTextChanged(const QString &arg1);
+    void on_cmbPaises_currentTextChanged();
 
 private:
     Ui::MainWindow *ui;
     DataBaseConnection mDbConnection;
     QSqlQueryModel *mModel;
+    QSqlDatabase db;
 };
 #endif // MAINWINDOW_H

@@ -3,25 +3,20 @@
 
 #include <QSqlDatabase>
 
-class DataBaseConnection
-{
+class DataBaseConnection {
 public:
-    DataBaseConnection(const QString &server,
-                       const QString &driver,
+    DataBaseConnection(const QString &databaseName,
+                       const QString &port,
                        const QString &user,
-                       const QString &password,
-                       const QString &databaseName,
-                       bool trustedConnection = true);
-    bool openDatabase(QString *error = nullptr);
+                       const QString &password);
 
 private:
     QSqlDatabase mDatabase;
-    QString mServer;
-    QString mDriver;
+    QString mDatabaseName;
+    QString mPort;
     QString mUser;
     QString mPassword;
-    QString mDatabaseName;
-    bool mTrustedConnection;
+
 };
 
 #endif // DATABASECONNECTION_H
